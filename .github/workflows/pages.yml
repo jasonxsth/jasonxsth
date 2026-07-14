@@ -29,12 +29,14 @@ jobs:
           node-version: 22
       - name: Validate static site
         run: npm run build
+      - name: Prepare text-only Pages artifact
+        run: npm run pages:prepare
       - name: Configure Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: _site
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4

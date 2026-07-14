@@ -1,1 +1,1 @@
-{"scripts":{"start":"python3 -m http.server 4173","build":"node scripts/check-site.mjs"},"devDependencies":{}}
+{"scripts":{"start":"python3 -m http.server 4173","build":"node scripts/check-site.mjs","pages:prepare":"node scripts/prepare-pages.mjs"},"devDependencies":{}}
