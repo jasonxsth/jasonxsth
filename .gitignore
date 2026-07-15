@@ -1,3 +1,7 @@
 _site/
+dist/
+tmp/
+output/
 transfer/
 node_modules/
+.playwright-cli/
