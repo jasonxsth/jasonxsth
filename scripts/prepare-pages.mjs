@@ -12,7 +12,7 @@ rmSync(output, { recursive: true, force: true });
 mkdirSync(output, { recursive: true });
 cpSync(source, output, { recursive: true });
 
-for (const file of ['index.html', 'about/index.html', 'services/index.html', 'portfolio/index.html', 'b2b/index.html', 'contacts/index.html']) {
+for (const file of ['index.html', 'about/index.html', 'services/index.html', 'portfolio/index.html', 'b2b/index.html', 'contacts/index.html', 'admin/index.html', 'content/site.json']) {
   const target = join(output, file);
   if (!existsSync(target) || statSync(target).size === 0) throw new Error(`Failed to prepare ${target}`);
 }

@@ -512,7 +512,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
   .project-c { top: 1100px; left: 8vw; width: 70vw; }
   .site-footer { grid-template-columns: 1fr 1fr; }
   .inner-hero { grid-template-columns: 1fr; }
-  .inner-hero h1, .inner-hero .section-label, .inner-lead { grid-column: 1; }
+  .inner-hero h1, .inner-hero .section-label, .inner-lead { min-width: 0; grid-column: 1; }
   .inner-lead { margin-left: 18%; }
   .method-statement, .business-visual { grid-template-columns: 1fr; }
   .method-statement blockquote, .business-visual p { margin-left: 18%; }
@@ -564,8 +564,9 @@ button, a { -webkit-tap-highlight-color: transparent; }
   .closing-content h2 { font-size: clamp(3.45rem, 16vw, 5rem); }
   .site-footer { grid-template-columns: 1fr; gap: 24px; }
   .inner-hero { min-height: 90svh; padding-top: 120px; }
-  .inner-hero h1 { font-size: clamp(3.2rem, 15vw, 5rem); }
+  .inner-hero h1 { font-size: clamp(2.8rem, 11.5vw, 4.6rem); }
   .inner-lead { margin-top: 45px; }
+  .page-cta h2 { min-width: 0; font-size: clamp(2.8rem, 11.5vw, 4.6rem); }
   .method-statement { padding-bottom: 100px; }
   .method-statement img { height: 115vw; }
   .method-steps { padding-top: 110px; }

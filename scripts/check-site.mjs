@@ -1,7 +1,7 @@
 import { existsSync, readFileSync, statSync } from 'node:fs';
 import { dirname, join, normalize } from 'node:path';
 
-const pages = [
+const publicPages = [
   'index.html',
   'about/index.html',
   'services/index.html',
@@ -10,9 +10,17 @@ const pages = [
   'contacts/index.html',
 ];
 
+const adminPages = ['admin/index.html'];
+const pages = [...publicPages, ...adminPages];
+
 const assets = [
   'src/site.css',
   'src/site.js',
+  'src/admin.css',
+  'src/admin.js',
+  'content/site.json',
+  'scripts/apply-content.mjs',
+  'ADMIN.md',
   'assets/hero-material-axis.webp',
   'assets/favicon.webp',
   'favicon.ico',
@@ -57,8 +65,19 @@ for (const page of pages) {
     if (!existsSync(target)) throw new Error(`${page} links to missing local file: ${url} -> ${target}`);
   }
 
-  if (/placeholder|место для изображения/i.test(html)) throw new Error(`${page} contains a placeholder`);
-  if (/\b(?:83%|награ(?:да|ды)|без единой ошибки)\b/i.test(html)) throw new Error(`${page} contains an unverified claim`);
+  if (publicPages.includes(page)) {
+    if (/placeholder|место для изображения/i.test(html)) throw new Error(`${page} contains a placeholder`);
+    if (/\b(?:83%|награ(?:да|ды)|без единой ошибки)\b/i.test(html)) throw new Error(`${page} contains an unverified claim`);
+  }
+}
+
+const content = JSON.parse(readFileSync('content/site.json', 'utf8'));
+if (content.schemaVersion !== 1 || !Array.isArray(content.pages)) throw new Error('content/site.json has an unsupported schema');
+if (content.pages.length !== publicPages.length) throw new Error('content/site.json must describe every public page');
+
+for (const page of content.pages) {
+  if (!publicPages.includes(page.file)) throw new Error(`${page.id} references an unknown page: ${page.file}`);
+  if (!Array.isArray(page.fields) || page.fields.length === 0) throw new Error(`${page.id} has no content fields`);
 }
 
 const css = readFileSync('src/site.css', 'utf8');

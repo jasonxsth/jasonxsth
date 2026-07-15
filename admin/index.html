@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#091416" />
+  <meta name="robots" content="noindex,nofollow" />
+  <meta name="description" content="Администрирование контента сайта RENDART" />
+  <title>RENDART Admin</title>
+  <link rel="icon" href="../assets/favicon.webp" type="image/webp" />
+  <link rel="stylesheet" href="../src/admin.css" />
+  <script type="module" src="../src/admin.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#editor">Перейти к редактору</a>
+
+  <header class="admin-header">
+    <a class="admin-brand" href="../" aria-label="Открыть сайт RENDART"><span>REND</span><span>ART</span></a>
+    <p>Контентная система</p>
+    <div class="admin-header-actions">
+      <span class="connection-state" data-connection-state>Предпросмотр</span>
+      <a href="../" target="_blank" rel="noopener">Открыть сайт</a>
+    </div>
+  </header>
+
+  <main class="admin-shell">
+    <aside class="admin-sidebar">
+      <div class="admin-intro">
+        <span>RENDART / CMS 01</span>
+        <h1>Тексты сайта</h1>
+        <p>Изменения сохраняются в GitHub и автоматически публикуются после успешной сборки</p>
+      </div>
+
+      <nav class="page-nav" aria-label="Страницы сайта" data-page-nav></nav>
+
+      <section class="github-panel" aria-labelledby="github-title">
+        <div class="github-panel-head">
+          <h2 id="github-title">Доступ к публикации</h2>
+          <span aria-hidden="true" data-auth-indicator></span>
+        </div>
+        <p data-auth-description>Подключите fine-grained GitHub token с доступом Contents: Read and write только к репозиторию сайта</p>
+        <form data-auth-form>
+          <label>
+            <span>GitHub token</span>
+            <input type="password" name="token" autocomplete="off" spellcheck="false" placeholder="github_pat_…" required />
+          </label>
+          <label class="session-option">
+            <input type="checkbox" name="remember" />
+            <span>Хранить до закрытия вкладки</span>
+          </label>
+          <button type="submit">Подключить GitHub</button>
+        </form>
+        <button class="disconnect-button" type="button" data-disconnect hidden>Отключить доступ</button>
+      </section>
+    </aside>
+
+    <section id="editor" class="admin-editor" aria-live="polite">
+      <div class="editor-head">
+        <div>
+          <p class="editor-kicker" data-page-kicker>Страница</p>
+          <h2 data-page-title>Загрузка контента</h2>
+        </div>
+        <div class="editor-actions">
+          <span class="change-count" data-change-count>Без изменений</span>
+          <button class="save-button" type="button" data-save disabled>Опубликовать изменения</button>
+        </div>
+      </div>
+
+      <div class="system-message" role="status" data-system-message>Загружаем опубликованный контент</div>
+      <form class="content-form" data-content-form></form>
+    </section>
+  </main>
+</body>
+</html>
