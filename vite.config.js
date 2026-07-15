@@ -1,5 +1,5 @@
 import { resolve } from 'node:path';
-import { copyFileSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { copyFileSync, cpSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { defineConfig } from 'vite';
 import { applyContent } from './scripts/apply-content.mjs';
 
@@ -11,6 +11,22 @@ const sitesWorker = `const worker = {
 
 export default worker;
 `;
+
+const sitesStaticEntries = [
+  'index.html',
+  'about',
+  'services',
+  'portfolio',
+  'b2b',
+  'contacts',
+  'admin',
+  'content',
+  'assets',
+  'favicon.ico',
+  'robots.txt',
+  'sitemap.xml',
+  '.nojekyll',
+];
 
 export default defineConfig({
   base: './',
@@ -31,6 +47,12 @@ export default defineConfig({
       mkdirSync(serverDir, { recursive: true });
       writeFileSync(resolve(serverDir, 'index.js'), sitesWorker);
       applyContent(import.meta.dirname);
+
+      const sitesClientDir = resolve(import.meta.dirname, 'dist/client');
+      mkdirSync(sitesClientDir, { recursive: true });
+      for (const entry of sitesStaticEntries) {
+        cpSync(resolve(import.meta.dirname, 'dist', entry), resolve(sitesClientDir, entry), { recursive: true });
+      }
     },
   }],
   build: {

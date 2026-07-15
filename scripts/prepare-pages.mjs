@@ -17,4 +17,9 @@ for (const file of ['index.html', 'about/index.html', 'services/index.html', 'po
   if (!existsSync(target) || statSync(target).size === 0) throw new Error(`Failed to prepare ${target}`);
 }
 
+for (const file of ['index.html', 'admin/index.html', 'content/site.json', 'assets']) {
+  const target = join(output, 'client', file);
+  if (!existsSync(target) || statSync(target).size === 0) throw new Error(`Failed to prepare Sites asset ${target}`);
+}
+
 console.log(`Prepared RENDART Pages artifact in ${output}`);
