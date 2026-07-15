@@ -145,14 +145,32 @@ if (smoothCapable && window.innerWidth > 980) {
         { clipPath: 'inset(8% 4% 8% 34% round 0 0 11vw 0)', ease: 'none', duration: 1 },
         0)
       .fromTo(image, { scale: 1.09 }, { scale: 1, ease: 'none', duration: 1 }, 0)
-      .fromTo(copy, { autoAlpha: 0, y: 34 }, { autoAlpha: 1, y: 0, ease: 'power2.out', duration: 0.34 }, 0.55);
+      .fromTo(copy, { opacity: 0, y: 34 }, { opacity: 1, y: 0, ease: 'power2.out', duration: 0.34 }, 0.55);
   }
 
-  const layerVisual = document.querySelector('[data-layer-visual]');
-  if (layerVisual) {
-    gsap.to('.layer-image-collage', { yPercent: -10, rotate: -1.2, ease: 'none', scrollTrigger: { trigger: layerVisual, start: 'top bottom', end: 'bottom top', scrub: true } });
-    gsap.to('.layer-image-drawing', { yPercent: 10, rotate: 1.1, ease: 'none', scrollTrigger: { trigger: layerVisual, start: 'top bottom', end: 'bottom top', scrub: true } });
-    gsap.to('.layer-image-render', { yPercent: -7, ease: 'none', scrollTrigger: { trigger: layerVisual, start: 'top bottom', end: 'bottom top', scrub: true } });
+  const layers = document.querySelector('[data-layers]');
+  const layerImages = [...document.querySelectorAll('[data-layer-image]')];
+  const layerSteps = [...document.querySelectorAll('[data-layer-step]')];
+  if (layers && layerImages.length === 3 && layerSteps.length === 3) {
+    const setActiveLayer = (activeIndex) => {
+      layerSteps.forEach((step, index) => step.classList.toggle('is-active', index === activeIndex));
+      layerImages.forEach((image, index) => image.classList.toggle('is-active', index === activeIndex));
+    };
+
+    gsap.set(layerImages.slice(1), { clipPath: 'inset(100% 4% 0% 4%)', scale: 1.045 });
+
+    gsap.timeline({
+      scrollTrigger: {
+        trigger: layers,
+        start: 'top top',
+        end: 'bottom bottom',
+        scrub: 0.55,
+        invalidateOnRefresh: true,
+        onUpdate: (self) => setActiveLayer(self.progress < 0.34 ? 0 : self.progress < 0.68 ? 1 : 2),
+      },
+    })
+      .to(layerImages[1], { clipPath: 'inset(6% 4% 6% 4%)', scale: 1, ease: 'none', duration: 1 })
+      .to(layerImages[2], { clipPath: 'inset(6% 4% 6% 4%)', scale: 1, ease: 'none', duration: 1 });
   }
 
   document.querySelectorAll('.editorial-project figure, .portfolio-study > figure').forEach((figure) => {
@@ -161,6 +179,22 @@ if (smoothCapable && window.innerWidth > 980) {
       { clipPath: 'inset(0% 0% 0% 0%)', ease: 'none', scrollTrigger: { trigger: figure, start: 'top 88%', end: 'top 48%', scrub: 0.45 } });
   });
 }
+
+const capabilityRows = [...document.querySelectorAll('[data-capability]')];
+const capabilityPreviews = [...document.querySelectorAll('[data-capability-preview]')];
+const activateCapability = (name) => {
+  capabilityRows.forEach((row) => row.classList.toggle('is-active', row.dataset.capability === name));
+  capabilityPreviews.forEach((preview) => {
+    const active = preview.dataset.capabilityPreview === name;
+    preview.classList.toggle('is-active', active);
+  });
+};
+
+capabilityRows.forEach((row) => {
+  const activate = () => activateCapability(row.dataset.capability);
+  row.addEventListener('mouseenter', activate);
+  row.addEventListener('focusin', activate);
+});
 
 const contactForm = document.querySelector('[data-contact-form]');
 contactForm?.addEventListener('submit', (event) => {
