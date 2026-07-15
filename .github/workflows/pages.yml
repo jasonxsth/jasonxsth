@@ -27,7 +27,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-      - name: Build and prepare Pages artifact
+      - name: Validate static site
+        run: npm run build
+      - name: Prepare text-only Pages artifact
         run: npm run pages:prepare
       - name: Configure Pages
         uses: actions/configure-pages@v5
