@@ -1,6 +1,15 @@
 import { resolve } from 'node:path';
-import { copyFileSync } from 'node:fs';
+import { copyFileSync, mkdirSync, writeFileSync } from 'node:fs';
 import { defineConfig } from 'vite';
+
+const sitesWorker = `const worker = {
+  async fetch(request, env) {
+    return env.ASSETS.fetch(request);
+  },
+};
+
+export default worker;
+`;
 
 export default defineConfig({
   base: './',
@@ -10,6 +19,9 @@ export default defineConfig({
       for (const file of ['.nojekyll', 'robots.txt', 'sitemap.xml', 'favicon.ico']) {
         copyFileSync(resolve(import.meta.dirname, file), resolve(import.meta.dirname, 'dist', file));
       }
+      const serverDir = resolve(import.meta.dirname, 'dist/server');
+      mkdirSync(serverDir, { recursive: true });
+      writeFileSync(resolve(serverDir, 'index.js'), sitesWorker);
     },
   }],
   build: {
