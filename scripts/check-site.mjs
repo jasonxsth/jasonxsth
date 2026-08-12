@@ -1,5 +1,6 @@
 import { existsSync, readFileSync, statSync } from 'node:fs';
 import { dirname, join, normalize } from 'node:path';
+import { findHangingRussianWords } from './russian-typography.mjs';
 
 const content = JSON.parse(readFileSync('content/site.json', 'utf8'));
 if (content.schemaVersion !== 2 || !content.global || !Array.isArray(content.pages) || !Array.isArray(content.cases)) {
@@ -18,6 +19,7 @@ const assets = [
   'src/admin.js',
   'content/site.json',
   'scripts/generate-site.mjs',
+  'scripts/russian-typography.mjs',
   'scripts/prepare-pages.mjs',
   'ADMIN.md',
   'assets/hero-material-axis.webp',
@@ -49,6 +51,11 @@ for (const page of pages) {
   const h1s = html.match(/<h1[\s>]/g) || [];
   if (h1s.length !== 1) throw new Error(`${page} must contain exactly one h1, found ${h1s.length}`);
   if (/mailto:/i.test(html)) throw new Error(`${page} contains forbidden mailto flow`);
+  if (/<a\b[^>]*href=["'][^"']*\/consent\//i.test(html)) throw new Error(`${page} contains a visible consent link`);
+  if (html.includes('Как удобно — так и свяжемся')) throw new Error(`${page} contains the old contact placeholder`);
+  if (html.includes('Онлайн-форма не передает данные')) throw new Error(`${page} contains the removed backend notice`);
+  const hangingWords = findHangingRussianWords(html);
+  if (hangingWords.length) throw new Error(`${page} contains hanging Russian words: ${[...new Set(hangingWords)].join(', ')}`);
 
   for (const match of html.matchAll(linkAttrs)) {
     const url = match[1];

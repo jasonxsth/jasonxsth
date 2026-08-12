@@ -1,5 +1,6 @@
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
+import { applyRussianTypography } from './russian-typography.mjs';
 
 const root = join(import.meta.dirname, '..');
 const content = JSON.parse(readFileSync(join(root, 'content/site.json'), 'utf8'));
@@ -110,7 +111,6 @@ const footer = (prefix) => `<footer class="site-footer" data-header-theme="dark"
     </nav>
     <nav aria-label="Юридическая информация">
       <a href="${href(prefix, '/privacy/')}">Политика обработки персональных данных</a>
-      <a href="${href(prefix, '/consent/')}">Согласие на обработку персональных данных</a>
     </nav>
   </div>
   <div class="footer-bottom"><span>© RENDART, ${new Date().getFullYear()}</span><a href="#top">Наверх ↑</a></div>
@@ -163,7 +163,7 @@ const processList = (rows, heading) => `<section class="process-section" aria-la
   }).join('')}</ol>
 </section>`;
 
-const inquiryForm = (prefix, { audience = '', title, body, submitLabel = 'Получить предварительный состав и расчет', compact = false } = {}) => `<section class="inquiry${compact ? ' inquiry-compact' : ''}" aria-labelledby="inquiry-title" data-header-theme="dark">
+const inquiryForm = (prefix, { audience = '', title, body, submitLabel = 'Получить состав и расчёт', compact = false } = {}) => `<section class="inquiry${compact ? ' inquiry-compact' : ''}" aria-labelledby="inquiry-title" data-header-theme="dark">
   <div class="inquiry-intro">
     <p class="section-kicker">Новый проект</p>
     <h2 id="inquiry-title">${escapeHtml(title)}</h2>
@@ -180,10 +180,10 @@ const inquiryForm = (prefix, { audience = '', title, body, submitLabel = 'Пол
     </div>
     <div class="form-grid">
       <label class="field"><span>Как вас зовут</span><input type="text" name="name" autocomplete="name" /></label>
-      <label class="field"><span>Телефон, Telegram или email</span><input type="text" name="contact" autocomplete="tel" inputmode="text" placeholder="Как удобно — так и свяжемся" /></label>
+      <label class="field"><span>Телефон, Telegram или email</span><input type="text" name="contact" autocomplete="tel" inputmode="text" placeholder="Удобный способ связи" /></label>
     </div>
     <div class="form-actions">
-      <label class="consent-check"><input type="checkbox" name="consent" value="yes" /><span>Я даю согласие на обработку персональных данных на условиях <a href="${href(prefix, '/consent/')}">Согласия</a></span></label>
+      <label class="consent-check"><input type="checkbox" name="consent" value="yes" /><span>Я даю согласие на обработку персональных данных в соответствии с <a href="${href(prefix, '/privacy/')}">Политикой</a></span></label>
       <button class="button button-light" type="submit">${escapeHtml(submitLabel)} <span aria-hidden="true">→</span></button>
     </div>
     <label class="field"><span>Коротко о задаче</span><textarea name="message" rows="3" placeholder="Продукт, пространство или нужный результат"></textarea></label>
@@ -197,7 +197,6 @@ const inquiryForm = (prefix, { audience = '', title, body, submitLabel = 'Пол
     </details>
     <label class="honeypot" aria-hidden="true">Не заполняйте это поле<input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
     <p class="form-status" role="status" aria-live="polite" data-form-status></p>
-    <p class="form-policy">Онлайн-форма не передает данные, пока не подключен защищенный backend. <a href="${href(prefix, '/privacy/')}">Политика обработки данных</a></p>
   </form>
 </section>`;
 
@@ -381,7 +380,7 @@ const renderContacts = () => {
   const prefix = '../';
   const body = `<main id="content" class="contact-main">
     <section class="contact-intro"><p class="section-kicker">Новый проект</p><h1>${escapeHtml(data.hero_title)}</h1><p>${escapeHtml(data.hero_body)}</p><a class="contact-phone" href="tel:${escapeHtml(global.phone_href)}" data-track="contact_click" data-channel="phone"><span>Телефон</span>${escapeHtml(global.phone_label)}</a></section>
-    ${inquiryForm(prefix, { title: 'Расскажите, как с вами связаться', body: 'Можно оставить телефон, Telegram или email. Обязательных полей нет — выберите удобный формат', submitLabel: 'Получить предварительный состав и расчет' })}
+    ${inquiryForm(prefix, { title: 'Расскажите, как с вами связаться', body: 'Можно оставить телефон, Telegram или email. Обязательных полей нет — выберите удобный формат', submitLabel: 'Получить состав и расчёт' })}
   </main>`;
   return pageShell({ page, route: '/contacts/', body, bodyClass: 'contacts-page' });
 };
@@ -464,7 +463,7 @@ cases.forEach((project, index) => outputs.set(`portfolio/${project.slug}/index.h
 for (const [file, html] of outputs) {
   const target = join(root, file);
   mkdirSync(dirname(target), { recursive: true });
-  writeFileSync(target, `${html.trim()}\n`);
+  writeFileSync(target, `${applyRussianTypography(html).trim()}\n`);
 }
 
 const indexedRoutes = ['/', '/b2b/', '/designers/', '/portfolio/', ...cases.map((project) => `/portfolio/${project.slug}/`), '/about/', '/contacts/'];

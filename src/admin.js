@@ -1,3 +1,5 @@
+import { bindRussianServiceWords } from '../scripts/russian-typography.mjs';
+
 const repository = {
   owner: 'jasonxsth',
   name: 'jasonxsth',
@@ -32,6 +34,9 @@ let connected = false;
 let busy = false;
 
 const clone = (value) => JSON.parse(JSON.stringify(value));
+const setText = (element, value) => {
+  element.textContent = bindRussianServiceWords(value);
+};
 
 const decodeBase64Utf8 = (value) => {
   const binary = atob(value.replace(/\s/g, ''));
@@ -69,7 +74,7 @@ const getDirtyFields = () => {
 };
 
 const setMessage = (message = '', type = '') => {
-  elements.message.textContent = message;
+  setText(elements.message, message);
   elements.message.className = 'system-message';
   if (!message) return;
   elements.message.classList.add('is-visible');
@@ -77,12 +82,12 @@ const setMessage = (message = '', type = '') => {
 };
 
 const setMessageWithLink = (message, label, href) => {
-  elements.message.replaceChildren(document.createTextNode(`${message} `));
+  elements.message.replaceChildren(document.createTextNode(`${bindRussianServiceWords(message)} `));
   const link = document.createElement('a');
   link.href = href;
   link.target = '_blank';
   link.rel = 'noopener';
-  link.textContent = label;
+  setText(link, label);
   link.style.textDecoration = 'underline';
   elements.message.append(link);
   elements.message.className = 'system-message is-visible is-success';
@@ -123,22 +128,22 @@ const validateContent = () => {
 };
 
 const updateConnectionUi = () => {
-  elements.connectionState.textContent = connected ? 'GitHub подключён' : 'Предпросмотр';
+  setText(elements.connectionState, connected ? 'GitHub подключён' : 'Предпросмотр');
   elements.connectionState.classList.toggle('is-connected', connected);
   elements.authIndicator.classList.toggle('is-connected', connected);
   elements.authForm.hidden = connected;
   elements.disconnect.hidden = !connected;
-  elements.authDescription.textContent = connected
+  setText(elements.authDescription, connected
     ? `Подключён ${repository.owner}/${repository.name}, ветка ${repository.branch}`
-    : 'Подключите fine-grained GitHub token с доступом Contents: Read and write только к репозиторию сайта';
+    : 'Подключите fine-grained GitHub token с доступом Contents: Read and write только к репозиторию сайта');
 };
 
 const updateDirtyUi = () => {
   const dirtyFields = getDirtyFields();
   const count = dirtyFields.length;
-  elements.changeCount.textContent = count === 0
+  setText(elements.changeCount, count === 0
     ? 'Без изменений'
-    : `${count} ${count === 1 ? 'изменение' : count < 5 ? 'изменения' : 'изменений'}`;
+    : `${count} ${count === 1 ? 'изменение' : count < 5 ? 'изменения' : 'изменений'}`);
   elements.save.disabled = !connected || busy || count === 0;
 
   document.querySelectorAll('[data-field-key]').forEach((input) => {
@@ -153,16 +158,16 @@ const createFieldInput = (page, field) => {
   const id = `field-${page.id}-${field.key}`;
   const label = document.createElement('label');
   label.htmlFor = id;
-  label.textContent = field.label;
+  setText(label, field.label);
 
   const hint = document.createElement('span');
-  hint.textContent = field.mode === 'html'
+  setText(hint, field.mode === 'html'
     ? 'Разрешены <br> и <em>'
     : field.mode === 'list'
       ? 'Один пункт в строке'
       : field.group === 'SEO'
         ? 'SEO'
-        : 'Текст';
+        : 'Текст');
   label.append(hint);
 
   const longValue = Array.isArray(field.value)
@@ -196,8 +201,8 @@ const renderPage = () => {
   const allEntries = entries(content);
   const page = findPage(content, activePageId) ?? allEntries[0];
   activePageId = page.id;
-  elements.pageKicker.textContent = `Раздел / ${String(allEntries.indexOf(page) + 1).padStart(2, '0')}`;
-  elements.pageTitle.textContent = page.label;
+  setText(elements.pageKicker, `Раздел / ${String(allEntries.indexOf(page) + 1).padStart(2, '0')}`);
+  setText(elements.pageTitle, page.label);
   elements.contentForm.replaceChildren();
 
   const groups = new Map();
@@ -215,7 +220,7 @@ const renderPage = () => {
     const index = document.createElement('span');
     index.textContent = String(groupIndex + 1).padStart(2, '0');
     const title = document.createElement('h3');
-    title.textContent = groupName;
+    setText(title, groupName);
     heading.append(index, title);
 
     const list = document.createElement('div');
@@ -238,7 +243,7 @@ const renderNavigation = () => {
     const button = document.createElement('button');
     button.type = 'button';
     button.dataset.pageId = page.id;
-    button.textContent = caseIds.has(page.id) ? `Кейс · ${page.label}` : page.label;
+    setText(button, caseIds.has(page.id) ? `Кейс · ${page.label}` : page.label);
     button.addEventListener('click', () => {
       activePageId = page.id;
       renderPage();
