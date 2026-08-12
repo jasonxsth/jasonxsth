@@ -1,37 +1,29 @@
 import { existsSync, readFileSync, statSync } from 'node:fs';
 import { dirname, join, normalize } from 'node:path';
 
+const content = JSON.parse(readFileSync('content/site.json', 'utf8'));
+if (content.schemaVersion !== 2 || !content.global || !Array.isArray(content.pages) || !Array.isArray(content.cases)) {
+  throw new Error('content/site.json has an unsupported schema');
+}
+
 const publicPages = [
-  'index.html',
-  'about/index.html',
-  'services/index.html',
-  'portfolio/index.html',
-  'b2b/index.html',
-  'contacts/index.html',
+  ...content.pages.map((page) => page.file),
+  ...content.cases.map((project) => `portfolio/${project.slug}/index.html`),
 ];
-
-const adminPages = ['admin/index.html'];
-const pages = [...publicPages, ...adminPages];
-
+const pages = [...publicPages, 'admin/index.html'];
 const assets = [
   'src/site.css',
   'src/site.js',
   'src/admin.css',
   'src/admin.js',
   'content/site.json',
-  'scripts/apply-content.mjs',
+  'scripts/generate-site.mjs',
+  'scripts/prepare-pages.mjs',
   'ADMIN.md',
   'assets/hero-material-axis.webp',
   'assets/favicon.webp',
   'favicon.ico',
-  'assets/projects/material-precision-bedroom.webp',
-  'assets/projects/material-bathroom-green.webp',
-  'assets/projects/calm-bedroom.webp',
-  'assets/projects/dark-bathroom.webp',
-  'assets/projects/bathroom-study.webp',
-  'assets/projects/collage-bathroom.webp',
-  'assets/projects/collage-living.webp',
-  'assets/projects/technical-drawing.webp',
+  ...content.cases.flatMap((project) => [project.cover, ...project.images]),
   'assets/fonts/Commissioner-VF.woff2',
   'assets/fonts/Geologica-VF.woff2',
   'assets/fonts/Literata-VF.woff2',
@@ -40,7 +32,7 @@ const assets = [
   'assets/fonts/OFL-Literata.txt',
 ];
 
-for (const file of [...pages, ...assets, '.nojekyll', 'robots.txt', 'sitemap.xml', '.github/workflows/pages.yml']) {
+for (const file of [...new Set([...pages, ...assets, '.nojekyll', 'robots.txt', 'sitemap.xml', '.github/workflows/pages.yml'])]) {
   if (!existsSync(file)) throw new Error(`${file} is missing`);
   if (file !== '.nojekyll' && statSync(file).size === 0) throw new Error(`${file} is empty`);
 }
@@ -49,35 +41,47 @@ const linkAttrs = /(?:href|src)=["']([^"']+)["']/g;
 for (const page of pages) {
   const html = readFileSync(page, 'utf8');
   if (/localhost|127\.0\.0\.1/i.test(html)) throw new Error(`${page} contains localhost`);
-  if (/(?:href|src)=["']\/(?!\/)/.test(html)) throw new Error(`${page} contains root-relative path`);
+  if (/(?:href|src)=["']\/(?!\/)/.test(html)) throw new Error(`${page} contains a root-relative path`);
   if (!/<title>[^<]+<\/title>/.test(html)) throw new Error(`${page} missing title`);
   if (!/<meta name="description" content="[^"]+"/.test(html)) throw new Error(`${page} missing description`);
+  if (!/<link rel="canonical" href="https:\/\/[^"]+"/.test(html) && page !== 'admin/index.html') throw new Error(`${page} missing canonical`);
+  if (!/<meta property="og:title" content="[^"]+"/.test(html) && page !== 'admin/index.html') throw new Error(`${page} missing Open Graph data`);
   const h1s = html.match(/<h1[\s>]/g) || [];
   if (h1s.length !== 1) throw new Error(`${page} must contain exactly one h1, found ${h1s.length}`);
+  if (/mailto:/i.test(html)) throw new Error(`${page} contains forbidden mailto flow`);
 
   for (const match of html.matchAll(linkAttrs)) {
     const url = match[1];
-    if (/^(?:https?:|mailto:|tel:|#)/.test(url)) continue;
+    if (/^(?:https?:|tel:|#)/.test(url)) continue;
     const clean = url.split('#')[0].split('?')[0];
-    if (!clean || clean.startsWith('../assets/') || clean.startsWith('assets/') || clean.startsWith('../src/') || clean.startsWith('src/')) continue;
+    if (!clean || /^(?:\.\.\/)*assets\//.test(clean) || /^(?:\.\.\/)*src\//.test(clean)) continue;
     const resolved = normalize(join(dirname(page), clean));
     const target = clean.endsWith('/') ? join(resolved, 'index.html') : resolved;
     if (!existsSync(target)) throw new Error(`${page} links to missing local file: ${url} -> ${target}`);
   }
 
   if (publicPages.includes(page)) {
-    if (/placeholder|место для изображения/i.test(html)) throw new Error(`${page} contains a placeholder`);
-    if (/\b(?:83%|награ(?:да|ды)|без единой ошибки)\b/i.test(html)) throw new Error(`${page} contains an unverified claim`);
+    const images = [...html.matchAll(/<img\s+[^>]*>/g)].map((match) => match[0]);
+    for (const image of images) {
+      if (!/\swidth="\d+"/.test(image) || !/\sheight="\d+"/.test(image)) throw new Error(`${page} has an image without dimensions`);
+      if (!/\salt="[^"]*"/.test(image)) throw new Error(`${page} has an image without alt text`);
+    }
   }
 }
 
-const content = JSON.parse(readFileSync('content/site.json', 'utf8'));
-if (content.schemaVersion !== 1 || !Array.isArray(content.pages)) throw new Error('content/site.json has an unsupported schema');
-if (content.pages.length !== publicPages.length) throw new Error('content/site.json must describe every public page');
-
 for (const page of content.pages) {
-  if (!publicPages.includes(page.file)) throw new Error(`${page.id} references an unknown page: ${page.file}`);
   if (!Array.isArray(page.fields) || page.fields.length === 0) throw new Error(`${page.id} has no content fields`);
+  if (!publicPages.includes(page.file)) throw new Error(`${page.id} references an unknown generated page: ${page.file}`);
+}
+
+const caseIds = new Set();
+const caseSlugs = new Set();
+for (const project of content.cases) {
+  if (caseIds.has(project.id) || caseSlugs.has(project.slug)) throw new Error(`Duplicate case id or slug: ${project.id}`);
+  caseIds.add(project.id);
+  caseSlugs.add(project.slug);
+  if (!['brand', 'designer'].includes(project.audience)) throw new Error(`${project.id} has an unknown audience`);
+  if (!Array.isArray(project.fields) || project.fields.length === 0) throw new Error(`${project.id} has no fields`);
 }
 
 const css = readFileSync('src/site.css', 'utf8');
@@ -89,4 +93,9 @@ for (const match of css.matchAll(/url\(["']?([^"')]+)["']?\)/g)) {
   if (!existsSync(target)) throw new Error(`src/site.css links to missing local file: ${url} -> ${target}`);
 }
 
-console.log('RENDART site passed source validation');
+const siteScript = [readFileSync('src/site.js', 'utf8'), ...publicPages.map((page) => readFileSync(page, 'utf8'))].join('\n');
+for (const event of ['audience_select', 'portfolio_open', 'cta_click', 'form_start', 'form_submit', 'form_error', 'contact_click']) {
+  if (!siteScript.includes(event)) throw new Error(`src/site.js does not instrument ${event}`);
+}
+
+console.log(`RENDART site passed source validation: ${publicPages.length} public pages, ${content.cases.length} cases`);

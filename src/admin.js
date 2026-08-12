@@ -49,12 +49,10 @@ const encodeBase64Utf8 = (value) => {
   return btoa(binary);
 };
 
-const visibleText = (value) => String(value)
-  .replace(/<[^>]*>/g, '')
-  .replace(/\s+/g, ' ')
-  .trim();
-
-const findPage = (source, pageId) => source?.pages?.find((page) => page.id === pageId);
+const entries = (source) => source
+  ? [source.global, ...source.pages, ...source.cases].filter(Boolean)
+  : [];
+const findPage = (source, pageId) => entries(source).find((page) => page.id === pageId);
 const findField = (source, pageId, fieldKey) => findPage(source, pageId)?.fields?.find((field) => field.key === fieldKey);
 
 const fieldIsDirty = (pageId, fieldKey) => {
@@ -65,7 +63,7 @@ const fieldIsDirty = (pageId, fieldKey) => {
 
 const getDirtyFields = () => {
   if (!content || !originalContent) return [];
-  return content.pages.flatMap((page) => page.fields
+  return entries(content).flatMap((page) => page.fields
     .filter((field) => fieldIsDirty(page.id, field.key))
     .map((field) => ({ page, field })));
 };
@@ -91,18 +89,19 @@ const setMessageWithLink = (message, label, href) => {
 };
 
 const validateContent = () => {
-  if (content?.schemaVersion !== 1 || !Array.isArray(content.pages)) {
+  if (content?.schemaVersion !== 2 || !content.global || !Array.isArray(content.pages) || !Array.isArray(content.cases)) {
     throw new Error('Файл контента имеет неподдерживаемую структуру');
   }
 
-  for (const page of content.pages) {
+  const identifiers = new Set();
+  for (const page of entries(content)) {
+    if (!page.id || identifiers.has(page.id)) throw new Error('Идентификаторы разделов контента должны быть уникальными');
+    identifiers.add(page.id);
+    if (!Array.isArray(page.fields)) throw new Error(`${page.label}: поля контента не найдены`);
     for (const field of page.fields) {
       const values = Array.isArray(field.value) ? field.value : [field.value];
       for (const value of values) {
         if (typeof value !== 'string') throw new Error(`${page.label} / ${field.label}: значение должно быть текстом`);
-        if (visibleText(value).endsWith('.')) {
-          throw new Error(`${page.label} / ${field.label}: уберите точку в конце`);
-        }
       }
 
       if (field.mode === 'html') {
@@ -194,9 +193,10 @@ const createFieldInput = (page, field) => {
 };
 
 const renderPage = () => {
-  const page = findPage(content, activePageId) ?? content.pages[0];
+  const allEntries = entries(content);
+  const page = findPage(content, activePageId) ?? allEntries[0];
   activePageId = page.id;
-  elements.pageKicker.textContent = `Страница / ${String(content.pages.indexOf(page) + 1).padStart(2, '0')}`;
+  elements.pageKicker.textContent = `Раздел / ${String(allEntries.indexOf(page) + 1).padStart(2, '0')}`;
   elements.pageTitle.textContent = page.label;
   elements.contentForm.replaceChildren();
 
@@ -233,11 +233,12 @@ const renderPage = () => {
 };
 
 const renderNavigation = () => {
-  elements.pageNav.replaceChildren(...content.pages.map((page) => {
+  const caseIds = new Set(content.cases.map((project) => project.id));
+  elements.pageNav.replaceChildren(...entries(content).map((page) => {
     const button = document.createElement('button');
     button.type = 'button';
     button.dataset.pageId = page.id;
-    button.textContent = page.label;
+    button.textContent = caseIds.has(page.id) ? `Кейс · ${page.label}` : page.label;
     button.addEventListener('click', () => {
       activePageId = page.id;
       renderPage();

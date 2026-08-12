@@ -1,30 +1,97 @@
 <!doctype html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#028088" />
-  <title>Обсудить проект с RENDART</title>
-  <meta name="description" content="Обсудить 3D-визуализацию, чертежи или проектные материалы с RENDART" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#f2eade" />
+  <meta name="robots" content="index,follow" />
+  <title>Обсудить проект — RENDART</title>
+  <meta name="description" content="Опишите продукт, пространство или проект. RENDART предложит состав работ и следующий шаг" />
   <link rel="canonical" href="https://jasonxsth.github.io/jasonxsth/contacts/" />
+  <meta property="og:locale" content="ru_RU" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="RENDART" />
+  <meta property="og:title" content="Обсудить проект — RENDART" />
+  <meta property="og:description" content="Опишите продукт, пространство или проект. RENDART предложит состав работ и следующий шаг" />
+  <meta property="og:url" content="https://jasonxsth.github.io/jasonxsth/contacts/" />
+  <meta property="og:image" content="https://jasonxsth.github.io/jasonxsth/assets/hero-material-axis.webp" />
+  <meta name="twitter:card" content="summary_large_image" />
   <link rel="icon" href="../assets/favicon.webp" type="image/webp" />
-  <link rel="stylesheet" href="../src/site.css" /><script type="module" src="../src/site.js"></script>
+  <!-- no above-the-fold image preload -->
+  <link rel="stylesheet" href="../src/site.css" media="print" onload="this.media='all'" />
+  <style>:root{--paper:#f2eade;--ink:#3f3d3d}*{box-sizing:border-box}html,body{margin:0;background:var(--paper);color:var(--ink)}body{font-family:Georgia,serif;overflow-x:clip}.hero{position:relative;min-height:100svh;overflow:hidden}.hero-media{position:absolute;inset:0;background:url('../assets/hero-material-axis.webp') center/cover}.hero-wordmark{position:absolute;top:50%;left:0;display:grid;width:100%;grid-template-columns:50% 50%;font-family:Arial,sans-serif;font-size:clamp(78px,14.4vw,222px);letter-spacing:-.072em;line-height:.76;transform:translateY(-46%);white-space:nowrap}.wordmark-rnd{text-align:right}.wordmark-art{color:var(--paper);font-family:Georgia,serif}.hero-footer{position:absolute;right:3.25vw;bottom:7.6vh;left:3.25vw;display:flex;justify-content:space-between}.hero-cta{color:var(--paper)}@media(max-width:820px){.hero{min-height:max(720px,100svh)}.hero-wordmark{font-size:clamp(57px,15.6vw,108px)}.hero-nav{display:none}.hero-cta{margin-left:auto}}</style>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"RENDART","url":"https://jasonxsth.github.io/jasonxsth/","telephone":"+79815926260"}</script>
 </head>
-<body class="inner-page contact-page">
-  <a class="skip-link" href="#content">Перейти к содержанию</a>
-  <header class="site-header is-visible is-dark" data-site-header><a class="site-logo" href="../" aria-label="RENDART, на главную"><span>REND</span><span>ART</span></a><button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav" data-menu-toggle><span></span><span></span><span class="visually-hidden">Открыть меню</span></button><nav id="site-nav" class="site-nav" aria-label="Основная навигация" data-site-nav><a href="../portfolio/">Проекты</a><a href="../services/">Услуги</a><a href="../about/">Подход</a><a href="../b2b/">Для бизнеса</a><a class="nav-contact" aria-current="page" href="./">Контакт</a></nav></header>
-  <main id="content">
-    <section class="contact-layout">
-      <div class="contact-intro"><p class="section-label reveal" data-reveal>Новый проект</p><h1 class="reveal" data-reveal>Обсудим нужные<br /><em>материалы и сроки</em></h1><p class="reveal" data-reveal>Опишите пространство, продукт или задачу, исходные материалы можно будет приложить к письму после отправки формы</p><a href="mailto:ir@rendart.ru">ir@rendart.ru</a></div>
-      <form class="contact-form" data-contact-form>
-        <label><span>Как вас зовут</span><input type="text" name="name" autocomplete="name" required /></label>
-        <label><span>Как с вами связаться</span><input type="email" name="email" autocomplete="email" required /></label>
-        <fieldset><legend>Тип задачи</legend><label><input type="radio" name="type" value="Интерьер или пространство" checked /><span>Интерьер или пространство</span></label><label><input type="radio" name="type" value="Продукт или бренд" /><span>Продукт или бренд</span></label><label><input type="radio" name="type" value="Другое" /><span>Другое</span></label></fieldset>
-        <label><span>Коротко о задаче</span><textarea name="message" rows="5" required></textarea></label>
-        <button type="submit">Сформировать письмо <span aria-hidden="true">↗</span></button>
-        <p class="form-note">Форма откроет письмо в вашем почтовом приложении, данные не сохраняются на сайте</p>
-      </form>
-    </section>
+<body class="contacts-page" id="top">
+  <a class="skip-link" href="#content">К содержанию</a>
+  <header class="site-header" data-site-header>
+    <a class="site-logo" href="../" aria-label="RENDART — на главную"><span>REND</span><span>ART</span></a>
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav" data-menu-toggle><span data-menu-label>Меню</span></button>
+    <nav class="site-nav" id="site-nav" aria-label="Основная навигация" data-site-nav>
+      <a href="../b2b/">Брендам</a><a href="../designers/">Дизайнерам и архитекторам</a><a href="../portfolio/">Портфолио</a><a href="../about/">О RENDART</a>
+      <a class="nav-contact" href="../contacts/" aria-current="page" data-track="cta_click" data-block="header">Обсудить проект</a>
+    </nav>
+  </header>
+  <main id="content" class="contact-main">
+    <section class="contact-intro"><p class="section-kicker">Новый проект</p><h1>Обсудим задачу и предложим состав решения</h1><p>Не обязательно готовить подробное техническое задание. Опишите продукт, пространство или необходимый результат — мы поможем определить следующий шаг</p><a class="contact-phone" href="tel:+79815926260" data-track="contact_click" data-channel="phone"><span>Телефон</span>+7 981 592 62 60</a></section>
+    <section class="inquiry" aria-labelledby="inquiry-title" data-header-theme="dark">
+  <div class="inquiry-intro">
+    <p class="section-kicker">Новый проект</p>
+    <h2 id="inquiry-title">Расскажите, как с вами связаться</h2>
+    <p>Можно оставить телефон, Telegram или email. Обязательных полей нет — выберите удобный формат</p>
+    <a class="direct-phone" href="tel:+79815926260" data-track="contact_click" data-channel="phone"><span>Можно сразу позвонить</span>+7 981 592 62 60</a>
+  </div>
+  <form class="inquiry-form" data-inquiry-form data-form-endpoint="" data-consent-version="draft-2026-08-12" data-thanks-url="../thanks/" novalidate>
+    <div class="form-row form-audience">
+      <fieldset><legend>Кто вы</legend>
+        <label><input type="radio" name="audience" value="brand" /><span>Интерьерный бренд</span></label>
+        <label><input type="radio" name="audience" value="designer" /><span>Дизайнер или архитектор</span></label>
+        <label><input type="radio" name="audience" value="other" /><span>Другое</span></label>
+      </fieldset>
+    </div>
+    <div class="form-grid">
+      <label class="field"><span>Как вас зовут</span><input type="text" name="name" autocomplete="name" /></label>
+      <label class="field"><span>Телефон, Telegram или email</span><input type="text" name="contact" autocomplete="tel" inputmode="text" placeholder="Как удобно — так и свяжемся" /></label>
+    </div>
+    <div class="form-actions">
+      <label class="consent-check"><input type="checkbox" name="consent" value="yes" /><span>Я даю согласие на обработку персональных данных на условиях <a href="../consent/">Согласия</a></span></label>
+      <button class="button button-light" type="submit">Получить предварительный состав и расчет <span aria-hidden="true">→</span></button>
+    </div>
+    <label class="field"><span>Коротко о задаче</span><textarea name="message" rows="3" placeholder="Продукт, пространство или нужный результат"></textarea></label>
+    <details class="form-more">
+      <summary>Добавить детали проекта</summary>
+      <div class="form-grid">
+        <label class="field"><span>Компания и роль</span><input type="text" name="company" autocomplete="organization" /></label>
+        <label class="field"><span>Желаемые сроки</span><input type="text" name="deadline" /></label>
+      </div>
+      <label class="field"><span>Ссылка на исходные материалы</span><input type="url" name="materials" inputmode="url" placeholder="https://" /></label>
+    </details>
+    <label class="honeypot" aria-hidden="true">Не заполняйте это поле<input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
+    <p class="form-status" role="status" aria-live="polite" data-form-status></p>
+    <p class="form-policy">Онлайн-форма не передает данные, пока не подключен защищенный backend. <a href="../privacy/">Политика обработки данных</a></p>
+  </form>
+</section>
   </main>
-  <footer class="site-footer contact-footer"><a class="footer-logo" href="../"><span>REND</span><span>ART</span></a><p>Research and development through art</p><nav aria-label="Навигация в подвале"><a href="../portfolio/">Проекты</a><a href="../services/">Услуги</a><a href="../about/">Подход</a><a href="./">Контакт</a></nav><p>© 2026 RENDART</p></footer>
+  <footer class="site-footer" data-header-theme="dark">
+  <div class="footer-top">
+    <a class="footer-logo" href="../" aria-label="RENDART — на главную"><span>REND</span><span>ART</span></a>
+    <p>Проектная студия для интерьерной индустрии</p>
+    <a class="footer-phone" href="tel:+79815926260" data-track="contact_click" data-channel="phone">+7 981 592 62 60</a>
+  </div>
+  <div class="footer-grid">
+    <nav aria-label="Навигация в подвале">
+      <a href="../b2b/">Брендам</a>
+      <a href="../designers/">Дизайнерам и архитекторам</a>
+      <a href="../portfolio/">Портфолио</a>
+      <a href="../about/">О RENDART</a>
+    </nav>
+    <nav aria-label="Юридическая информация">
+      <a href="../privacy/">Политика обработки персональных данных</a>
+      <a href="../consent/">Согласие на обработку персональных данных</a>
+    </nav>
+  </div>
+  <div class="footer-bottom"><span>© RENDART, 2026</span><a href="#top">Наверх ↑</a></div>
+</footer>
+  <script type="module" src="../src/site.js"></script>
 </body>
 </html>
