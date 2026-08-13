@@ -46,6 +46,25 @@ download_tree "admin/"
 download_tree "consent/"
 download_tree "thanks/"
 
+# wget --page-requisites does not discover Vite dynamic imports such as
+# `import("./lenis-<hash>.js")`. Fetch those chunks explicitly and repeat in
+# case a downloaded chunk imports another one.
+for _ in {1..10}; do
+  downloaded=0
+  while IFS= read -r asset; do
+    [[ -n "$asset" ]] || continue
+    if [[ ! -s "$STAGE/assets/$asset" ]]; then
+      wget \
+        --quiet \
+        --no-cache \
+        --output-document="$STAGE/assets/$asset" \
+        "$SOURCE_URL/assets/$asset"
+      downloaded=1
+    fi
+  done < <(grep -RhoE '\./[A-Za-z0-9_-]+\.js' "$STAGE/assets" 2>/dev/null | sed 's#^\./##' | sort -u)
+  [[ "$downloaded" == "1" ]] || break
+done
+
 mkdir -p "$STAGE/content"
 wget --quiet --no-cache --output-document="$STAGE/404.html" "$SOURCE_URL/404.html"
 wget --quiet --no-cache --output-document="$STAGE/favicon.ico" "$SOURCE_URL/favicon.ico"
