@@ -140,9 +140,6 @@ if (!in_array($audience, ['', 'brand', 'designer', 'other'], true)) {
 }
 
 $materials = cleanText($payload['materials'] ?? '', 500);
-if ($materials !== '' && (!filter_var($materials, FILTER_VALIDATE_URL) || !in_array(parse_url($materials, PHP_URL_SCHEME), ['http', 'https'], true))) {
-    respond(422, 'invalid_fields');
-}
 
 $fields = [
     'name' => cleanText($payload['name'] ?? '', 120),
