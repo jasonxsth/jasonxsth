@@ -115,8 +115,12 @@ if [[ ! -d "$DOCROOT" ]]; then
   exit 1
 fi
 
+chmod 755 "$STAGE" "$DOCROOT"
+
 rsync \
   --archive \
+  --no-perms \
+  --omit-dir-times \
   --delete-delay \
   --exclude='.well-known/' \
   --exclude='.htaccess' \
