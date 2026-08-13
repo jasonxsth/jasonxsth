@@ -179,21 +179,21 @@ const inquiryForm = (prefix, { audience = '', title, body, submitLabel = 'Пол
       </fieldset>
     </div>
     <div class="form-grid">
-      <label class="field"><span>Как вас зовут</span><input type="text" name="name" autocomplete="name" /></label>
-      <label class="field"><span>Телефон, Telegram или email</span><input type="text" name="contact" autocomplete="tel" inputmode="text" placeholder="Удобный способ связи" /></label>
+      <label class="field"><span>Как вас зовут</span><input type="text" name="name" autocomplete="name" maxlength="120" /></label>
+      <label class="field"><span>Телефон, Telegram или email</span><input type="text" name="contact" autocomplete="tel" inputmode="text" placeholder="Удобный способ связи" maxlength="200" required /></label>
     </div>
     <div class="form-actions">
       <label class="consent-check"><input type="checkbox" name="consent" value="yes" /><span>Я даю согласие на обработку персональных данных в соответствии с <a href="${href(prefix, '/privacy/')}">Политикой</a></span></label>
       <button class="button button-light" type="submit">${escapeHtml(submitLabel)} <span aria-hidden="true">→</span></button>
     </div>
-    <label class="field"><span>Коротко о задаче</span><textarea name="message" rows="3" placeholder="Продукт, пространство или нужный результат"></textarea></label>
+    <label class="field"><span>Коротко о задаче</span><textarea name="message" rows="3" placeholder="Продукт, пространство или нужный результат" maxlength="1500"></textarea></label>
     <details class="form-more">
       <summary>Добавить детали проекта</summary>
       <div class="form-grid">
-        <label class="field"><span>Компания и роль</span><input type="text" name="company" autocomplete="organization" /></label>
-        <label class="field"><span>Желаемые сроки</span><input type="text" name="deadline" /></label>
+        <label class="field"><span>Компания и роль</span><input type="text" name="company" autocomplete="organization" maxlength="200" /></label>
+        <label class="field"><span>Желаемые сроки</span><input type="text" name="deadline" maxlength="120" /></label>
       </div>
-      <label class="field"><span>Ссылка на исходные материалы</span><input type="url" name="materials" inputmode="url" placeholder="https://" /></label>
+      <label class="field"><span>Ссылка на исходные материалы</span><input type="url" name="materials" inputmode="url" placeholder="https://" maxlength="500" /></label>
     </details>
     <label class="honeypot" aria-hidden="true">Не заполняйте это поле<input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
     <p class="form-status" role="status" aria-live="polite" data-form-status></p>
@@ -387,7 +387,7 @@ const renderContacts = () => {
 
 const renderLegal = (page, route) => {
   const prefix = '../';
-  const body = `<main id="content" class="legal-main"><section><p class="section-kicker">Юридический документ</p><h1>${escapeHtml(page.data.hero_title)}</h1><p class="legal-version">Статус: проект · версия ${escapeHtml(global.consent_version)}</p><div class="legal-notice"><h2>Документ готовится к публикации</h2><p>${escapeHtml(global.legal_status)}</p><p>До публикации утвержденного текста онлайн-форма RENDART не отправляет и не сохраняет персональные данные</p></div>${textLink(prefix, '/contacts/', 'Вернуться к обсуждению проекта')}</section></main>`;
+  const body = `<main id="content" class="legal-main"><section><p class="section-kicker">Юридический документ</p><h1>${escapeHtml(page.data.hero_title)}</h1><p class="legal-version">Версия ${escapeHtml(global.consent_version)}</p><div class="legal-notice"><h2>Обработка обращений</h2><p>${escapeHtml(global.legal_status)}</p><p>Отправляя форму, пользователь подтверждает согласие на обработку указанных им данных для рассмотрения обращения и обратной связи</p></div>${textLink(prefix, '/contacts/', 'Вернуться к обсуждению проекта')}</section></main>`;
   return pageShell({ page, route, body, bodyClass: 'legal-page', robots: 'noindex,follow' });
 };
 

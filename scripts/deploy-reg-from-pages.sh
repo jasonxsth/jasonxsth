@@ -2,6 +2,7 @@
 set -Eeuo pipefail
 
 SOURCE_URL="${RENDART_SOURCE_URL:-https://jasonxsth.github.io/jasonxsth}"
+API_SOURCE_URL="${RENDART_API_SOURCE_URL:-https://raw.githubusercontent.com/jasonxsth/jasonxsth/master/ops/reg.ru/api/lead.php}"
 DOCROOT="${RENDART_DOCROOT:-$HOME/www/rendart.ru}"
 DEPLOY_ROOT="${RENDART_DEPLOY_ROOT:-$HOME/deploy}"
 LOCK_DIR="$DEPLOY_ROOT/.rendart-deploy.lock"
@@ -126,5 +127,18 @@ rsync \
   --exclude='.htaccess' \
   --exclude='api/' \
   "$STAGE/" "$DOCROOT/"
+
+API_STAGE="$STAGE/lead.php"
+wget --quiet --no-cache --output-document="$API_STAGE" "$API_SOURCE_URL"
+if ! grep -Fq 'declare(strict_types=1);' "$API_STAGE"; then
+  echo "Invalid API artifact" >&2
+  exit 1
+fi
+if command -v php >/dev/null 2>&1; then
+  php -l "$API_STAGE" >/dev/null
+fi
+mkdir -p "$DOCROOT/api"
+chmod 755 "$DOCROOT/api"
+install -m 644 "$API_STAGE" "$DOCROOT/api/lead.php"
 
 echo "RENDART deployed successfully from $SOURCE_URL"

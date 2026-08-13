@@ -16,10 +16,10 @@
       { "key": "phone_href", "group": "Контакты", "label": "Телефон для ссылки", "mode": "text", "value": "+79815926260" },
       { "key": "public_email", "group": "Контакты", "label": "Публичный email", "mode": "text", "value": "" },
       { "key": "messenger_links", "group": "Контакты", "label": "Ссылки Telegram / WhatsApp / MAX", "mode": "list", "value": [] },
-      { "key": "form_endpoint", "group": "Интеграции", "label": "Backend endpoint", "mode": "text", "value": "" },
+      { "key": "form_endpoint", "group": "Интеграции", "label": "Backend endpoint", "mode": "text", "value": "/api/lead.php" },
       { "key": "analytics_id", "group": "Интеграции", "label": "Яндекс Метрика ID", "mode": "text", "value": "" },
-      { "key": "consent_version", "group": "Юридические данные", "label": "Версия согласия", "mode": "text", "value": "draft-2026-08-12" },
-      { "key": "legal_status", "group": "Юридические данные", "label": "Статус юридических текстов", "mode": "text", "value": "Содержание документа будет опубликовано после утверждения владельцем сайта и юристом" }
+      { "key": "consent_version", "group": "Юридические данные", "label": "Версия согласия", "mode": "text", "value": "2026-08-13" },
+      { "key": "legal_status", "group": "Юридические данные", "label": "Статус юридических текстов", "mode": "text", "value": "Форма передает указанные пользователем данные RENDART для ответа на обращение. Не отправляйте через форму специальные категории персональных данных" }
     ]
   },
   "pages": [
