@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /admin/
 Disallow: /thanks/
-Sitemap: https://jasonxsth.github.io/jasonxsth/sitemap.xml
+Sitemap: https://rendart.ru/sitemap.xml

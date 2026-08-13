@@ -6,7 +6,7 @@
     "label": "Общие настройки",
     "fields": [
       { "key": "site_name", "group": "Бренд", "label": "Название", "mode": "text", "value": "RENDART" },
-      { "key": "base_url", "group": "Бренд", "label": "Production URL", "mode": "text", "value": "https://jasonxsth.github.io/jasonxsth" },
+      { "key": "base_url", "group": "Бренд", "label": "Production URL", "mode": "text", "value": "https://rendart.ru" },
       { "key": "menu_b2b", "group": "Навигация", "label": "Брендам", "mode": "text", "value": "Брендам" },
       { "key": "menu_designers", "group": "Навигация", "label": "Дизайнерам", "mode": "text", "value": "Дизайнерам и архитекторам" },
       { "key": "menu_portfolio", "group": "Навигация", "label": "Портфолио", "mode": "text", "value": "Портфолио" },
