@@ -297,7 +297,7 @@ const innerHero = ({ prefix, label, title, body, imagePath, imageAlt, primary, s
 
 const rowsSection = ({ id, kicker, title, rows, className = '', numbered = false }) => `<section class="rows-section ${className}" aria-labelledby="${id}">
   <div class="rows-heading"><p class="section-kicker">${escapeHtml(kicker)}</p><h2 id="${id}">${escapeHtml(title)}</h2></div>
-  <div class="ruled-rows">${rows.map(([heading, body], index) => `<article>${numbered ? `<span>${String(index + 1).padStart(2, '0')}</span>` : ''}<h3>${escapeHtml(heading)}</h3><p>${escapeHtml(body)}</p></article>`).join('')}</div>
+  <div class="ruled-rows${numbered ? ' ruled-rows-numbered' : ''}">${rows.map(([heading, body], index) => `<article>${numbered ? `<span>${String(index + 1).padStart(2, '0')}</span>` : ''}<h3>${escapeHtml(heading)}</h3><p>${escapeHtml(body)}</p></article>`).join('')}</div>
 </section>`;
 
 const renderB2B = () => {
