@@ -148,7 +148,13 @@ rsync \
   "$STAGE/" "$DOCROOT/"
 
 API_STAGE="$STAGE/lead.php"
-wget --quiet --no-cache --output-document="$API_STAGE" "$API_SOURCE_URL"
+api_separator='?'
+[[ "$API_SOURCE_URL" == *\?* ]] && api_separator='&'
+wget \
+  --quiet \
+  --no-cache \
+  --output-document="$API_STAGE" \
+  "${API_SOURCE_URL}${api_separator}rendart_deploy=$(date +%s)"
 if ! grep -Fq 'declare(strict_types=1);' "$API_STAGE"; then
   echo "Invalid API artifact" >&2
   exit 1
