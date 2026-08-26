@@ -234,7 +234,7 @@ document.querySelectorAll('[data-inquiry-form]').forEach((form) => {
 
     const contact = String(data.get('contact') || '').trim();
     if (!contact) {
-      status.textContent = 'Укажите телефон, Telegram или email для связи';
+      status.textContent = 'Укажите телефон, Telegram, MAX или email для связи';
       status.classList.remove('is-success');
       form.querySelector('input[name="contact"]')?.focus();
       track('form_error', { error_type: 'contact_missing' });

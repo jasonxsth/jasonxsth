@@ -19,7 +19,7 @@
   <link rel="icon" href="../assets/favicon.webp" type="image/webp" />
   <!-- no above-the-fold image preload -->
   <link rel="stylesheet" href="../src/site.css" media="print" onload="this.media='all'" />
-  <style>:root{--paper:#f2eade;--ink:#3f3d3d}*{box-sizing:border-box}html,body{margin:0;background:var(--paper);color:var(--ink)}body{font-family:Georgia,serif;overflow-x:clip}.hero{position:relative;min-height:100svh;overflow:hidden}.hero-media{position:absolute;inset:0;background:url('../assets/hero-material-axis.webp') center/cover}.hero-wordmark{position:absolute;top:50%;left:0;display:grid;width:100%;grid-template-columns:50% 50%;font-family:Arial,sans-serif;font-size:clamp(78px,14.4vw,222px);letter-spacing:-.072em;line-height:.76;transform:translateY(-46%);white-space:nowrap}.wordmark-rnd{text-align:right}.wordmark-art{color:var(--paper);font-family:Georgia,serif}.hero-footer{position:absolute;right:3.25vw;bottom:7.6vh;left:3.25vw;display:flex;justify-content:space-between}.hero-cta{color:var(--paper)}@media(max-width:820px){.hero{min-height:max(720px,100svh)}.hero-wordmark{font-size:clamp(57px,15.6vw,108px)}.hero-nav{display:none}.hero-cta{margin-left:auto}}</style>
+  <style>:root{--paper:#f2eade;--ink:#3f3d3d}*{box-sizing:border-box}html,body{margin:0;background:var(--paper);color:var(--ink)}body{font-family:Georgia,serif;overflow-x:clip}.hero{position:relative;min-height:100svh;overflow:hidden}.hero-media{position:absolute;inset:0;background:url('../assets/hero-material-axis.webp') center/cover}.hero-descriptor{position:absolute;top:5.4vh;left:3.25vw;width:min(340px,38vw);margin:0;font:15px/1.35 Arial,sans-serif}.hero-wordmark{position:absolute;top:50%;left:0;display:grid;width:100%;grid-template-columns:50% 50%;font-family:Arial,sans-serif;font-size:clamp(78px,14.4vw,222px);letter-spacing:-.072em;line-height:.76;transform:translateY(-46%);white-space:nowrap}.wordmark-rnd{text-align:right}.wordmark-art{color:var(--paper);font-family:Georgia,serif}.hero-footer{position:absolute;right:3.25vw;bottom:7.6vh;left:3.25vw;display:flex;justify-content:space-between}.hero-cta{color:var(--paper)}@media(max-width:820px){.hero{min-height:max(720px,100svh)}.hero-descriptor{top:92px;width:min(310px,72vw);font-size:13px}.hero-wordmark{font-size:clamp(57px,15.6vw,108px)}.hero-nav{display:none}.hero-cta{margin-left:auto}}</style>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"RENDART","url":"https://rendart.ru/","telephone":"+79815926260"}</script>
 </head>
 <body class="contacts-page" id="top">
@@ -33,13 +33,14 @@
     </nav>
   </header>
   <main id="content" class="contact-main">
-    <section class="contact-intro"><p class="section-kicker">Новый проект</p><h1>Обсудим задачу и предложим состав решения</h1><p>Не обязательно готовить подробное техническое задание. Опишите продукт, пространство или необходимый результат — мы поможем определить следующий шаг</p><a class="contact-phone" href="tel:+79815926260" data-track="contact_click" data-channel="phone"><span>Телефон</span>+7 981 592 62 60</a></section>
+    <section class="contact-intro"><p class="section-kicker">Новый проект</p><h1>Обсудим задачу и предложим состав решения</h1><p>Не обязательно готовить подробное техническое задание. Опишите продукт, пространство или необходимый результат — мы поможем определить следующий шаг</p><div class="contact-directory"><a class="contact-phone" href="tel:+79815926260" data-track="contact_click" data-channel="phone"><span>Телефон, Telegram и MAX</span>+7 981 592 62 60</a><div class="contact-messengers"><a href="https://t.me/Rend_Art_agency" data-track="contact_click" data-channel="telegram" rel="noopener">@Rend_Art_agency</a><a href="tel:+79815926260" data-track="contact_click" data-channel="max">MAX · +7 981 592 62 60</a></div><div class="contact-emails"><span>Email команды</span><a href="mailto:ir@rendart.ru" data-track="contact_click" data-channel="email">ir@rendart.ru</a><a href="mailto:sk@rendart.ru" data-track="contact_click" data-channel="email">sk@rendart.ru</a><a href="mailto:vb@rendart.ru" data-track="contact_click" data-channel="email">vb@rendart.ru</a></div></div></section>
     <section class="inquiry" aria-labelledby="inquiry-title" data-header-theme="dark">
   <div class="inquiry-intro">
     <p class="section-kicker">Новый проект</p>
     <h2 id="inquiry-title">Расскажите, как с вами связаться</h2>
-    <p>Можно оставить телефон, Telegram или email. Обязательных полей нет — выберите удобный формат</p>
+    <p>Оставьте телефон, Telegram, MAX или email — выберите удобный способ связи</p>
     <a class="direct-phone" href="tel:+79815926260" data-track="contact_click" data-channel="phone"><span>Можно сразу позвонить</span>+7 981 592 62 60</a>
+    <div class="inquiry-contact-links"><a href="https://t.me/Rend_Art_agency" data-track="contact_click" data-channel="telegram" rel="noopener">@Rend_Art_agency</a><a href="tel:+79815926260" data-track="contact_click" data-channel="max">MAX · +7 981 592 62 60</a></div>
   </div>
   <form class="inquiry-form" data-inquiry-form data-form-endpoint="/api/lead.php" data-consent-version="2026-08-13" data-thanks-url="../thanks/" novalidate>
     <div class="form-row form-audience">
@@ -51,7 +52,7 @@
     </div>
     <div class="form-grid">
       <label class="field"><span>Как вас зовут</span><input type="text" name="name" autocomplete="name" maxlength="120" /></label>
-      <label class="field"><span>Телефон, Telegram или email</span><input type="text" name="contact" autocomplete="tel" inputmode="text" placeholder="Удобный способ связи" maxlength="200" required /></label>
+      <label class="field"><span>Телефон, Telegram, MAX или email</span><input type="text" name="contact" autocomplete="tel" inputmode="text" placeholder="Удобный способ связи" maxlength="200" required /></label>
     </div>
     <div class="form-actions">
       <label class="consent-check"><input type="checkbox" name="consent" value="yes" /><span>Я даю согласие на обработку персональных данных в соответствии с <a href="../privacy/">Политикой</a></span></label>
@@ -83,6 +84,10 @@
       <a href="../designers/">Дизайнерам и архитекторам</a>
       <a href="../portfolio/">Портфолио</a>
       <a href="../about/">О RENDART</a>
+    </nav>
+    <nav aria-label="Контакты RENDART">
+      <a href="https://t.me/Rend_Art_agency" data-track="contact_click" data-channel="telegram">@Rend_Art_agency</a><a href="tel:+79815926260" data-track="contact_click" data-channel="max">MAX · +7 981 592 62 60</a>
+      <a href="mailto:ir@rendart.ru" data-track="contact_click" data-channel="email">ir@rendart.ru</a><a href="mailto:sk@rendart.ru" data-track="contact_click" data-channel="email">sk@rendart.ru</a><a href="mailto:vb@rendart.ru" data-track="contact_click" data-channel="email">vb@rendart.ru</a>
     </nav>
     <nav aria-label="Юридическая информация">
       <a href="../privacy/">Политика обработки персональных данных</a>

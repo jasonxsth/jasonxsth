@@ -105,8 +105,10 @@ for file in "${required[@]}"; do
 done
 
 index_count="$(find "$STAGE" -type f -name index.html | wc -l | tr -d '[:space:]')"
-if [[ "$index_count" != "16" ]]; then
-  echo "Expected 16 generated pages, received $index_count" >&2
+case_count="$(sed -n '/"cases"[[:space:]]*:/,$p' "$STAGE/content/site.json" | grep -c '"slug"[[:space:]]*:')"
+expected_index_count="$((10 + case_count))"
+if [[ "$index_count" != "$expected_index_count" ]]; then
+  echo "Expected $expected_index_count site index pages, received $index_count" >&2
   exit 1
 fi
 

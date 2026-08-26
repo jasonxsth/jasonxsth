@@ -6,6 +6,8 @@ const content = JSON.parse(readFileSync('content/site.json', 'utf8'));
 if (content.schemaVersion !== 2 || !content.global || !Array.isArray(content.pages) || !Array.isArray(content.cases)) {
   throw new Error('content/site.json has an unsupported schema');
 }
+const globalFields = Object.fromEntries(content.global.fields.map((field) => [field.key, field.value]));
+const allowedEmails = new Set(globalFields.contact_emails ?? []);
 
 const publicPages = [
   ...content.pages.map((page) => page.file),
@@ -50,7 +52,9 @@ for (const page of pages) {
   if (!/<meta property="og:title" content="[^"]+"/.test(html) && page !== 'admin/index.html') throw new Error(`${page} missing Open Graph data`);
   const h1s = html.match(/<h1[\s>]/g) || [];
   if (h1s.length !== 1) throw new Error(`${page} must contain exactly one h1, found ${h1s.length}`);
-  if (/mailto:/i.test(html)) throw new Error(`${page} contains forbidden mailto flow`);
+  for (const match of html.matchAll(/href=["']mailto:([^"']+)["']/gi)) {
+    if (!allowedEmails.has(match[1])) throw new Error(`${page} contains an unknown contact email: ${match[1]}`);
+  }
   if (/<a\b[^>]*href=["'][^"']*\/consent\//i.test(html)) throw new Error(`${page} contains a visible consent link`);
   if (html.includes('Как удобно — так и свяжемся')) throw new Error(`${page} contains the old contact placeholder`);
   if (html.includes('Онлайн-форма не передает данные')) throw new Error(`${page} contains the removed backend notice`);
@@ -59,7 +63,7 @@ for (const page of pages) {
 
   for (const match of html.matchAll(linkAttrs)) {
     const url = match[1];
-    if (/^(?:https?:|tel:|#)/.test(url)) continue;
+    if (/^(?:https?:|tel:|mailto:|#)/.test(url)) continue;
     const clean = url.split('#')[0].split('?')[0];
     if (!clean || /^(?:\.\.\/)*assets\//.test(clean) || /^(?:\.\.\/)*src\//.test(clean)) continue;
     const resolved = normalize(join(dirname(page), clean));
@@ -89,6 +93,18 @@ for (const project of content.cases) {
   caseSlugs.add(project.slug);
   if (!['brand', 'designer'].includes(project.audience)) throw new Error(`${project.id} has an unknown audience`);
   if (!Array.isArray(project.fields) || project.fields.length === 0) throw new Error(`${project.id} has no fields`);
+  if (!project.sourceFolder || !project.category) throw new Error(`${project.id} is missing sourceFolder or category`);
+  if (!Array.isArray(project.images) || project.images.length === 0 || project.images[0] !== project.cover) throw new Error(`${project.id} must start its image list with the cover`);
+}
+
+const portfolioCases = content.cases.filter((project) => project.portfolio !== false);
+if (portfolioCases.length !== 8) throw new Error(`Portfolio must contain 8 curated cases, found ${portfolioCases.length}`);
+const categoryCounts = portfolioCases.reduce((groups, project) => {
+  groups[project.category] = (groups[project.category] ?? 0) + 1;
+  return groups;
+}, {});
+for (const [category, expected] of Object.entries({ bedroom: 2, bathroom: 2, tbo: 2, sketch: 1, collage: 1 })) {
+  if ((categoryCounts[category] ?? 0) !== expected) throw new Error(`Portfolio category ${category} must contain ${expected} cases`);
 }
 
 const css = readFileSync('src/site.css', 'utf8');
