@@ -103,7 +103,7 @@ const categoryCounts = portfolioCases.reduce((groups, project) => {
   groups[project.category] = (groups[project.category] ?? 0) + 1;
   return groups;
 }, {});
-for (const [category, expected] of Object.entries({ bedroom: 2, bathroom: 2, tbo: 2, sketch: 1, collage: 1 })) {
+for (const [category, expected] of Object.entries({ bedroom: 2, tbo: 4, sketch: 1, collage: 1 })) {
   if ((categoryCounts[category] ?? 0) !== expected) throw new Error(`Portfolio category ${category} must contain ${expected} cases`);
 }
 

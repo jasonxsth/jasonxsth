@@ -72,6 +72,9 @@ const imageDimensions = new Map([
   ['assets/projects/2026/tbo-salini-01.webp', [1400, 1050]],
   ['assets/projects/2026/tbo-salini-02.webp', [1400, 1050]],
   ['assets/projects/2026/tbo-salini-03.webp', [1400, 1050]],
+  ['assets/projects/2026/tbo-fontana-01.webp', [1280, 960]],
+  ['assets/projects/2026/tbo-fontana-02.webp', [1280, 960]],
+  ['assets/projects/2026/tbo-aquame-01.webp', [1280, 960]],
 ]);
 
 const image = (prefix, path, alt, options = {}) => {
@@ -109,7 +112,7 @@ const head = ({ prefix, title, description, route, ogImage = 'assets/hero-materi
   <link rel="icon" href="${asset(prefix, 'assets/favicon.webp')}" type="image/webp" />
   ${preloadImage ? `<link rel="preload" href="${asset(prefix, preloadImage)}" as="image" fetchpriority="high" />` : '<!-- no above-the-fold image preload -->'}
   <link rel="stylesheet" href="${asset(prefix, 'src/site.css')}" media="print" onload="this.media='all'" />
-  <style>:root{--paper:#f2eade;--ink:#3f3d3d}*{box-sizing:border-box}html,body{margin:0;background:var(--paper);color:var(--ink)}body{font-family:Georgia,serif;overflow-x:clip}.hero{position:relative;min-height:100svh;overflow:hidden}.hero-media{position:absolute;inset:0;background:url('${asset(prefix, 'assets/hero-material-axis.webp')}') center/cover}.hero-descriptor{position:absolute;top:5.4vh;left:3.25vw;width:min(340px,38vw);margin:0;font:15px/1.35 Arial,sans-serif}.hero-wordmark{position:absolute;top:50%;left:0;display:grid;width:100%;grid-template-columns:50% 50%;font-family:Arial,sans-serif;font-size:clamp(78px,14.4vw,222px);letter-spacing:-.072em;line-height:.76;transform:translateY(-46%);white-space:nowrap}.wordmark-rnd{text-align:right}.wordmark-art{color:var(--paper);font-family:Georgia,serif}.hero-footer{position:absolute;right:3.25vw;bottom:7.6vh;left:3.25vw;display:flex;justify-content:space-between}.hero-cta{color:var(--paper)}@media(max-width:820px){.hero{min-height:max(720px,100svh)}.hero-descriptor{top:92px;width:min(310px,72vw);font-size:13px}.hero-wordmark{font-size:clamp(57px,15.6vw,108px)}.hero-nav{display:none}.hero-cta{margin-left:auto}}</style>
+  <style>:root{--paper:#f2eade;--ink:#3f3d3d}*{box-sizing:border-box}html,body{margin:0;background:var(--paper);color:var(--ink)}body{font-family:Georgia,serif;overflow-x:clip}.hero{position:relative;min-height:100svh;overflow:hidden}.hero-media{position:absolute;inset:0;background:url('${asset(prefix, 'assets/hero-material-axis.webp')}') center/cover}.hero-descriptor{position:absolute;top:calc(50% + clamp(72px,7.5vw,118px));right:3.25vw;left:3.25vw;min-height:2.8em;margin:0;color:transparent;background:linear-gradient(90deg,var(--ink) 0 50%,var(--paper) 50% 100%);font:500 clamp(11px,.88vw,14px)/1.35 Arial,sans-serif;text-align:center;letter-spacing:.01em;background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent}.hero-wordmark{position:absolute;top:50%;left:0;display:grid;width:100%;grid-template-columns:50% 50%;font-family:Arial,sans-serif;font-size:clamp(78px,14.4vw,222px);letter-spacing:-.072em;line-height:.76;transform:translateY(-46%);white-space:nowrap}.wordmark-rnd{text-align:right}.wordmark-art{color:var(--paper);font-family:Georgia,serif}.hero-footer{position:absolute;right:3.25vw;bottom:7.6vh;left:3.25vw;display:flex;justify-content:space-between}.hero-cta{color:var(--paper)}@media(max-width:820px){.hero{min-height:max(720px,100svh)}.hero-descriptor{top:calc(47% + clamp(54px,8vw,72px));right:3.25vw;left:3.25vw;font-size:11px}.hero-wordmark{top:47%;font-size:clamp(57px,15.6vw,108px)}.hero-nav{display:none}.hero-cta{margin-left:auto}}</style>
   <script type="application/ld+json">${structuredData}</script>`;
 
 const logo = (prefix, className = 'site-logo') => `<a class="${className}" href="${href(prefix, '/')}" aria-label="RENDART — на главную"><span>REND</span><span>ART</span></a>`;
@@ -253,7 +256,7 @@ const renderHome = () => {
   const page = pages.home;
   const data = page.data;
   const prefix = '';
-  const selected = ['interior-approval', 'concept-to-docs', 'product-in-space', 'cafe-wave', 'tbo-salini'].map((id) => caseById[id]);
+  const selected = ['interior-approval', 'concept-to-docs', 'product-in-space', 'cafe-wave'].map((id) => caseById[id]);
   const brandTasks = splitRows(data.brand_tasks);
   const designerTasks = splitRows(data.designer_tasks);
   const process = splitRows(data.process_items);
@@ -280,7 +283,7 @@ const renderHome = () => {
         <h1 id="position-title">${escapeHtml(data.hero_title)}</h1>
         <div class="positioning-copy"><p>${escapeHtml(data.hero_body)}</p><div class="link-row">${textLink(prefix, '/portfolio/', 'Смотреть портфолио', 'data-track="cta_click" data-block="position"')}${textLink(prefix, '/contacts/', 'Обсудить проект', 'data-track="cta_click" data-block="position"')}</div></div>
       </div>
-      <figure class="positioning-image" data-reveal>${image(prefix, 'assets/projects/2026/collage-lobby-01.webp', 'Коллаж, материалы и планировочная схема RENDART')}<figcaption><span>Исследование</span><span>Визуальное решение</span><span>Проектная логика</span></figcaption></figure>
+      <figure class="positioning-image" data-reveal>${image(prefix, 'assets/projects/material-precision-bedroom.webp', 'Интерьерная визуализация RENDART')}</figure>
     </section>
 
     <section class="audience-section" aria-labelledby="audience-title">
@@ -305,7 +308,7 @@ const renderHome = () => {
     </section>
 
     <section class="task-switcher brand-task-switcher" aria-labelledby="brand-tasks-title" data-task-switcher>
-      <div class="task-visuals">${['assets/projects/2026/bathroom-night-01.webp', 'assets/projects/2026/brand-zone-showroom.webp', 'assets/projects/2026/collage-lobby-01.webp', 'assets/projects/2026/tbo-salini-03.webp'].map((path, index) => `<figure data-task-preview="${index}"${index === 0 ? ' class="is-active"' : ''}>${image(prefix, path, brandTasks[index][0])}</figure>`).join('')}</div>
+      <div class="task-visuals">${['assets/projects/2026/tbo-aquame-01.webp', 'assets/projects/2026/tbo-fontana-01.webp', 'assets/projects/2026/collage-lobby-01.webp', 'assets/projects/2026/tbo-abber-03.webp'].map((path, index) => `<figure data-task-preview="${index}"${index === 0 ? ' class="is-active"' : ''}>${image(prefix, path, brandTasks[index][0])}</figure>`).join('')}</div>
       <div class="task-content"><p class="section-kicker">Брендам</p><h2 id="brand-tasks-title">Задачи интерьерных брендов</h2><ol>${brandTasks.map(([title, gets, benefit], index) => `<li${index === 0 ? ' class="is-active"' : ''}><button type="button" data-task-trigger="${index}" aria-expanded="${index === 0}"><span>${String(index + 1).padStart(2, '0')}</span><strong>${escapeHtml(title)}</strong></button><div><p><b>Что получает клиент</b>${escapeHtml(gets)}</p><p><b>Что это дает</b>${escapeHtml(benefit)}</p></div></li>`).join('')}</ol>${textLink(prefix, '/b2b/', 'Все решения для брендов')}</div>
     </section>
 
@@ -355,7 +358,7 @@ const renderB2B = () => {
   const page = pages.b2b;
   const data = page.data;
   const prefix = '../';
-  const brandCases = ['tbo-salini', 'brand-space', 'cafe-wave', 'collection-launch', 'product-in-space'].map((id) => caseById[id]);
+  const brandCases = ['tbo-salini', 'brand-space', 'tbo-fontana', 'tbo-aquame'].map((id) => caseById[id]);
   const tasks = splitRows(data.tasks);
   const services = splitRows(data.services);
   const digital = splitRows(data.digital_items);
