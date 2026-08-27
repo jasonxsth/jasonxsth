@@ -112,7 +112,7 @@ const head = ({ prefix, title, description, route, ogImage = 'assets/hero-materi
   <link rel="icon" href="${asset(prefix, 'assets/favicon.webp')}" type="image/webp" />
   ${preloadImage ? `<link rel="preload" href="${asset(prefix, preloadImage)}" as="image" fetchpriority="high" />` : '<!-- no above-the-fold image preload -->'}
   <link rel="stylesheet" href="${asset(prefix, 'src/site.css')}" media="print" onload="this.media='all'" />
-  <style>:root{--paper:#f2eade;--ink:#3f3d3d}*{box-sizing:border-box}html,body{margin:0;background:var(--paper);color:var(--ink)}body{font-family:Georgia,serif;overflow-x:clip}.hero{position:relative;min-height:100svh;overflow:hidden}.hero-media{position:absolute;inset:0;background:url('${asset(prefix, 'assets/hero-material-axis.webp')}') center/cover}.hero-descriptor{position:absolute;top:calc(50% + clamp(72px,7.5vw,118px));right:3.25vw;left:3.25vw;min-height:2.8em;margin:0;color:transparent;background:linear-gradient(90deg,var(--ink) 0 50%,var(--paper) 50% 100%);font:500 clamp(11px,.88vw,14px)/1.35 Arial,sans-serif;text-align:center;letter-spacing:.01em;background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent}.hero-wordmark{position:absolute;top:50%;left:0;display:grid;width:100%;grid-template-columns:50% 50%;font-family:Arial,sans-serif;font-size:clamp(78px,14.4vw,222px);letter-spacing:-.072em;line-height:.76;transform:translateY(-46%);white-space:nowrap}.wordmark-rnd{text-align:right}.wordmark-art{color:var(--paper);font-family:Georgia,serif}.hero-footer{position:absolute;right:3.25vw;bottom:7.6vh;left:3.25vw;display:flex;justify-content:space-between}.hero-cta{color:var(--paper)}@media(max-width:820px){.hero{min-height:max(720px,100svh)}.hero-descriptor{top:calc(47% + clamp(54px,8vw,72px));right:3.25vw;left:3.25vw;font-size:11px}.hero-wordmark{top:47%;font-size:clamp(57px,15.6vw,108px)}.hero-nav{display:none}.hero-cta{margin-left:auto}}</style>
+  <style>:root{--paper:#f2eade;--ink:#3f3d3d}*{box-sizing:border-box}html,body{margin:0;background:var(--paper);color:var(--ink)}body{font-family:Georgia,serif;overflow-x:clip}.hero{position:relative;min-height:100svh;overflow:hidden}.hero-media{position:absolute;inset:0;background:url('${asset(prefix, 'assets/hero-material-axis.webp')}') center/cover}.hero-descriptor{position:absolute;top:calc(50% + clamp(72px,7.5vw,118px));right:3.25vw;left:3.25vw;min-height:2.8em;margin:0;font:500 clamp(1rem,1.15vw,1.125rem)/1.4 Arial,sans-serif;text-align:center;letter-spacing:.005em}.hero-descriptor-source{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}.hero-descriptor-half{position:absolute;inset:0;display:block;pointer-events:none}.hero-descriptor-left{color:var(--ink);clip-path:inset(0 50% 0 0)}.hero-descriptor-right{color:var(--paper);clip-path:inset(0 0 0 50%)}.hero-wordmark{position:absolute;top:50%;left:0;display:grid;width:100%;grid-template-columns:50% 50%;font-family:Arial,sans-serif;font-size:clamp(78px,14.4vw,222px);letter-spacing:-.072em;line-height:.76;transform:translateY(-46%);white-space:nowrap}.wordmark-rnd{text-align:right}.wordmark-art{color:var(--paper);font-family:Georgia,serif}.hero-footer{position:absolute;right:3.25vw;bottom:7.6vh;left:3.25vw;display:flex;justify-content:space-between}.hero-cta{color:var(--paper)}@media(max-width:820px){.hero{min-height:max(720px,100svh)}.hero-descriptor{top:calc(47% + clamp(54px,8vw,72px));right:3.25vw;left:3.25vw;font-size:.875rem}.hero-wordmark{top:47%;font-size:clamp(57px,15.6vw,108px)}.hero-nav{display:none}.hero-cta{margin-left:auto}}</style>
   <script type="application/ld+json">${structuredData}</script>`;
 
 const logo = (prefix, className = 'site-logo') => `<a class="${className}" href="${href(prefix, '/')}" aria-label="RENDART — на главную"><span>REND</span><span>ART</span></a>`;
@@ -256,6 +256,7 @@ const renderHome = () => {
   const page = pages.home;
   const data = page.data;
   const prefix = '';
+  const heroDescriptor = escapeHtml(data.hero_descriptor);
   const selected = ['interior-approval', 'concept-to-docs', 'product-in-space', 'cafe-wave'].map((id) => caseById[id]);
   const brandTasks = splitRows(data.brand_tasks);
   const designerTasks = splitRows(data.designer_tasks);
@@ -263,7 +264,7 @@ const renderHome = () => {
   const body = `<main id="content">
     <section class="hero" data-hero aria-label="RENDART">
       <div class="hero-media" role="img" aria-label="Граница чертежа и материала"></div>
-      <p class="hero-descriptor">${escapeHtml(data.hero_descriptor)}</p>
+      <p class="hero-descriptor"><span class="hero-descriptor-source">${heroDescriptor}</span><span class="hero-descriptor-half hero-descriptor-left" aria-hidden="true">${heroDescriptor}</span><span class="hero-descriptor-half hero-descriptor-right" aria-hidden="true">${heroDescriptor}</span></p>
       <div class="hero-wordmark" aria-hidden="true"><span class="wordmark-rnd">REND</span><span class="wordmark-art">ART</span></div>
       <div class="hero-footer">
         <nav class="hero-nav" aria-label="Быстрые разделы">

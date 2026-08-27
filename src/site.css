@@ -184,17 +184,26 @@ button { cursor: pointer; }
   left: var(--edge);
   min-height: 2.8em;
   margin: 0;
-  color: transparent;
-  background: linear-gradient(90deg, var(--ink) 0 50%, var(--paper) 50% 100%);
   font-family: "Geologica", Arial, sans-serif;
-  font-size: clamp(11px, 0.88vw, 14px);
-  font-variation-settings: "wght" 500, "SHRP" 38;
-  letter-spacing: 0.01em;
-  line-height: 1.35;
+  font-size: clamp(1rem, 1.15vw, 1.125rem);
+  font-variation-settings: "wght" 530, "SHRP" 40;
+  letter-spacing: 0.005em;
+  line-height: 1.4;
   text-align: center;
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+}
+.hero-descriptor-half {
+  position: absolute;
+  inset: 0;
+  display: block;
+  pointer-events: none;
+}
+.hero-descriptor-left {
+  color: var(--ink);
+  clip-path: inset(0 50% 0 0);
+}
+.hero-descriptor-right {
+  color: var(--paper);
+  clip-path: inset(0 0 0 50%);
 }
 .hero-wordmark {
   position: absolute;
@@ -765,7 +774,7 @@ h1, h2, h3, p { text-wrap: pretty; }
   .hero { min-height: max(720px, 100svh); }
   .hero-media { background-position: 48.5% center; }
   .hero-wordmark { top: 47%; font-size: clamp(57px, 15.6vw, 108px); }
-  .hero-descriptor { top: calc(47% + clamp(54px, 8vw, 72px)); right: var(--edge); left: var(--edge); font-size: 11px; }
+  .hero-descriptor { top: calc(47% + clamp(54px, 8vw, 72px)); right: var(--edge); left: var(--edge); font-size: 0.875rem; }
   .hero-footer { right: var(--edge); bottom: 58px; left: var(--edge); }
   .hero-nav { display: none; }
   .hero-cta { margin-left: auto; }
