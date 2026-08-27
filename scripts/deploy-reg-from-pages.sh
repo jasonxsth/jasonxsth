@@ -3,10 +3,26 @@ set -Eeuo pipefail
 
 SOURCE_URL="${RENDART_SOURCE_URL:-https://jasonxsth.github.io/jasonxsth}"
 API_SOURCE_URL="${RENDART_API_SOURCE_URL:-https://raw.githubusercontent.com/jasonxsth/jasonxsth/master/ops/reg.ru/api/lead.php}"
+SOURCE_GUARD_PATH="${RENDART_SOURCE_GUARD_PATH:-portfolio/tbo-fontana/}"
 DOCROOT="${RENDART_DOCROOT:-$HOME/www/rendart.ru}"
 DEPLOY_ROOT="${RENDART_DEPLOY_ROOT:-$HOME/deploy}"
 LOCK_DIR="$DEPLOY_ROOT/.rendart-deploy.lock"
 STAGE=""
+
+# Do not let the scheduled mirror replace production with an older Pages build.
+# The guard can be moved forward for a future release through the environment.
+if [[ -n "$SOURCE_GUARD_PATH" ]]; then
+  guard_separator='?'
+  [[ "$SOURCE_GUARD_PATH" == *\?* ]] && guard_separator='&'
+  if ! wget \
+    --quiet \
+    --no-cache \
+    --spider \
+    "${SOURCE_URL%/}/${SOURCE_GUARD_PATH}${guard_separator}rendart_guard=$(date +%s)"; then
+    echo "RENDART source is older than the guarded production release; deploy skipped"
+    exit 0
+  fi
+fi
 
 mkdir -p "$DEPLOY_ROOT"
 
